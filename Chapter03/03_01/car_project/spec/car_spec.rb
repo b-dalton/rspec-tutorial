@@ -15,5 +15,11 @@ describe 'Car' do
             car.year = 9999
             expect(car.year).to eq(9999)
         end
+
+        it "allows reading and writing for :color" do
+            car = Car.new
+            car.year = "foo"
+            expect(car.year).to eq("foo")
+        end
     end
 end
