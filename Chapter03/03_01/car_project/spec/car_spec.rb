@@ -34,4 +34,11 @@ describe 'Car' do
             expect(Car.colors).to match_array(c)
         end
     end
+
+    describe '#full_name' do
+        it "returns a string in the expected format" do
+            @honda = Car.new(:make => 'Honda', :year => 2004, :color => 'blue')
+            expect(@honda.full_name).to eq('2004 Honda (blue)')
+        end
+    end
 end
