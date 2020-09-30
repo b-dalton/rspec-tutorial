@@ -21,13 +21,10 @@ describe 'Car' do
             car.year = "foo"
             expect(car.year).to eq("foo")
         end
-<<<<<<< HEAD
 
         it "allows reading for :wheels" do
             car = Car.new
             expect(car.wheels).to eq(4)
         end
-=======
->>>>>>> 8906c1cce39227b4cbd6b516484daea2beaeb46f
     end
 end
