@@ -62,4 +62,14 @@ describe 'Expectation Matchers' do
             expect(0).not_to be_nil # nil only, just like #nil?
         end
     end
+
+    describe 'numeric comparison matchers' do
+        
+        it 'will match less than/greater than' do
+            expect(10).to be > 9
+            expect(10).to be >= 10
+            expect(10).to be <= 10
+            expect(9).to be < 10
+        end
+    end
 end
