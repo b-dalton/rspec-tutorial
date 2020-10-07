@@ -1,7 +1,6 @@
 describe 'Expectation Matchers' do
     
     describe 'equivalence matchers' do
-        
         it "will match loose equality with #eq" do
             # Arrange
             a = "2 cats"
@@ -38,7 +37,6 @@ describe 'Expectation Matchers' do
     end
 
     describe 'truthiness matches' do
-        
         it 'will match true/false' do
             expect(1 < 2).to be(true) # do not use 'be_true'
             expect(1 > 2).to be(false) # do not use 'be_false'
@@ -66,8 +64,7 @@ describe 'Expectation Matchers' do
         end
     end
 
-    describe 'numeric comparison matchers' do
-        
+    describe 'numeric comparison matchers' do 
         it 'will match less than/greater than' do
             expect(10).to be > 9
             expect(10).to be >= 10
@@ -83,8 +80,7 @@ describe 'Expectation Matchers' do
         end
     end
 
-    describe 'collection matchers' do
-        
+    describe 'collection matchers' do 
         it 'will match arrays' do
             # Arrange
             array = [1, 2, 3]
@@ -131,7 +127,6 @@ describe 'Expectation Matchers' do
     end
 
     describe 'other useful matchers' do
-        
         it 'will match a string with a regular expression' do
             # This matcher is a good way to "spot check" strings
             string = 'The order has been received.'
@@ -153,7 +148,7 @@ describe 'Expectation Matchers' do
             expect([1, 2, 3]).to be_an(Array) # alias of #be_kind_of
         end
 
-        it 'will match objects with respond_to' do
+        it 'will match objects with #respond_to' do
             string = 'test'
             expect(string).to respond_to(:length)
             expect(string).to_not respond_to(:sort)
@@ -184,7 +179,6 @@ describe 'Expectation Matchers' do
     end
 
     describe 'predicate matchers' do
-        
         it 'will match be_* to custom methods ending in ?' do
             # drops "be_", adds "?" to end, calls method on object
             # Can use these when methods end in "?", require no arguments, and return true/false
@@ -292,6 +286,62 @@ describe 'Expectation Matchers' do
             expect { print('hello') }.to output(/ll/).to_stdout
 
             expect { warn('problem') }.to output(/problem/).to_stderr
+        end
+    end
+
+    describe 'compound expectations' do
+        it 'will match using: and, or, &, |' do
+            expect([1, 2, 3, 4]).to start_with(1).and end_with(4)
+
+            expect([1, 2, 3, 4]).to start_with(1) & include(2)
+
+            expect(10 * 10).to be_odd.or be > 50
+
+            array = ['hello', 'goodbye'].shuffle
+            expect(array.first).to eq('hello') | eq('goodbye')
+        end
+    end
+
+    describe 'composing matchers' do
+        # some matchers accept matchers as arguments
+
+        it 'will match by sending matchers as arguments to matchers' do
+            string = 'hello'
+            expect { string = 'goodbye' }.to change { string }.from( match(/ll/) ).to( match(/oo/) )
+
+            hash = {:a => 1, :b => 2, :c => 3}
+            expect(hash).to include(:a => be_odd, :b => be_even, :c => be_odd)
+            expect(hash).to include(:a => be > 0, :b => be_within(2).of(4))
+        end
+
+        it 'will match using noun-phrase aliases for matchers' do
+            # These are built-in aliases that make specs read better by using noun-based
+            # phrases instead of verb-based phrases.
+
+            # valid but award example
+            fruits = ['apple', 'banana', 'cherry']
+            expect(fruits).to start_with( start_with('a') ) & include( match(/a.a.a/) ) & 
+                end_with( end_with('y') )
+
+            # improved version of previous example
+            # "start_with" becomes "a_string_starting_with", "end_with"
+            # becomes "a_string_ending_with" and "match" becomes "a_string_matching"
+            fruits = ['apple', 'banana', 'cherry']
+            expect(fruits).to start_with( a_string_starting_with('a') ) &
+                include( a_string_matching(/a.a.a/) ) & 
+                end_with( a_string_ending_with('y') )
+
+            # another valid but awkward example
+            array = [1, 2, 3, 4]
+            expect(array).to start_with( a_value <= 2 ) | 
+                end_with( a_value_within(1).of(5))
+
+            # improved version of previous example
+            # "be <= 2" becomes "a_value <= 2"
+            # "be_within" becomes "a_value_within"
+            array = [1, 2, 3, 4]
+            expect(array).to start_with( a_value <= 2 ) |
+                end_with( a_value_within(1).of(5) )
         end
     end
 end
