@@ -230,5 +230,9 @@ describe 'Expectation Matchers' do
 
         end
     end
+
+    describe 'observation matchers' do
+        
+    end
 end
 
