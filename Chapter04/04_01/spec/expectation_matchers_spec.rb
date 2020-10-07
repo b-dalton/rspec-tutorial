@@ -305,6 +305,11 @@ describe 'Expectation Matchers' do
     describe 'composing matchers' do
         # some matchers accept matchers as arguments
 
+        it 'will match all collection elements using a matcher' do
+            array = [1, 2, 3]
+            expect(array).to all( be < 5 )
+        end
+
         it 'will match by sending matchers as arguments to matchers' do
             string = 'hello'
             expect { string = 'goodbye' }.to change { string }.from( match(/ll/) ).to( match(/oo/) )
