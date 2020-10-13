@@ -79,6 +79,24 @@ describe 'Doubles' do
             expect(Time.now.year).to eq(2010)
         end
 
+        it "allows stubbing database calls a mock object" do
+            class Customer
+                attr_accessor :name
+                def self.find
+                    # database lookup, returns one object
+                end
+            end
+
+            dbl = double("Mock Customer")
+            allow(dbl).to receive(:name).and_return("Bob")
+
+            allow(Customer).to receive(:find).and_return(dbl)
+
+            customer = Customer.find
+            expect(customer.name).to eq("Bob")
+        end
+
+        
         
 
     end
