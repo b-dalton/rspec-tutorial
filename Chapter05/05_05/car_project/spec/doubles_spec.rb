@@ -24,13 +24,17 @@ describe 'Doubles' do
     end
 
     it "allow stubbing multiple methods with hash syntax" do
-        dbl = double("Person", :full_name => "Mary Smith", :initials => "MTS")
+        dbl = double("Persons")
+        # Uses #receive_messages, not #receive
+        allow(dbl).to receive_messages(:full_name => "Mary Smith", :initials => "MTS")
         expect(dbl.full_name).to eq("Mary Smith")
         expect(dbl.initials).to eq("MTS")
     end
 
     it "allows stubbing with a hash argument to #double" do
-
+        dbl = double("Person", :full_name => "Mary Smith", :initials => "MTS")
+        expect(dbl.full_name).to eq("Mary Smith")
+        expect(dbl.initials).to eq("MTS")
     end
 
     it "allow stubbing multiple responses with #and_return" do
