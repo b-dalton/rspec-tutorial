@@ -53,7 +53,7 @@ describe 'Doubles' do
             time = Time.new(2010, 1, 1, 12, 0, 0)
             allow(time).to receive(:year).and_return(1975)
 
-            expect(time.to_s).to eq("2010-01-01 12:00:00 -0100")
+            expect(time.to_s).to eq("2010-01-01 12:00:00 +0000")
             expect(time.year).to eq(1975)
         end
 
@@ -69,6 +69,18 @@ describe 'Doubles' do
             allow(hero).to receive(:name).and_return("Clark Kent")
             expect(hero.name).to eq("Clark Kent")
         end
+
+        it "allows stubbing class methods on Ruby classes" do
+            fixed = Time.new(2010, 1, 1, 12, 0, 0)
+            allow(Time).to receive(:now).and_return(fixed)
+
+            expect(Time.now).to eq(fixed)
+            expect(Time.now.to_s).to eq("2010-01-01 12:00:00 +0000")
+            expect(Time.now.year).to eq(2010)
+        end
+
+        
+
     end
 
 end
