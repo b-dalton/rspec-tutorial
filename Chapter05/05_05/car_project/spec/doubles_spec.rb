@@ -96,7 +96,22 @@ describe 'Doubles' do
             expect(customer.name).to eq("Bob")
         end
 
-        
+        it "allows stubbing database calls with many mock objects" do
+            class Customer
+                attr_accessor :name
+                def self.all
+                    # database lookup, returns array of objects
+                end
+            end
+
+            c1 = double("First Customer", :name => "Bob")
+            c2 = double("Second Customer", :name => "Mary")
+
+            allow(Customer).to receive(:all).and_return([c1, c2])
+
+            customers = Customer.all
+            expect(customers[1].name).to eq("Mary")
+        end
         
 
     end
