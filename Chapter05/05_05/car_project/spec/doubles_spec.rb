@@ -53,8 +53,21 @@ describe 'Doubles' do
             time = Time.new(2010, 1, 1, 12, 0, 0)
             allow(time).to receive(:year).and_return(1975)
 
-            expect(time.to_s).to eq("2010-01-01 12:00:00 -0500")
+            expect(time.to_s).to eq("2010-01-01 12:00:00 -0100")
             expect(time.year).to eq(1975)
+        end
+
+        it "allows stubbing instance methods on custom classes" do
+            class SuperHero
+                attr_accessor :name 
+            end
+
+            hero = SuperHero.new
+            hero.name = "Superman"
+            expect(hero.name).to eq("Superman")
+
+            allow(hero).to receive(:name).and_return("Clark Kent")
+            expect(hero.name).to eq("Clark Kent")
         end
     end
 
